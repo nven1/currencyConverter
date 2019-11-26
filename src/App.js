@@ -1,33 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import Select from 'react-select'
+import CookieConsent from "react-cookie-consent";
 import { getCurrencies, convert } from './actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './App.css';
+import Picker from './Picker';
 
 function App(props) {
   const [state, setState] = useState({
-    currencyFrom: null,
-    currencyTo: null,
+    currencyFrom: 'EUR',
+    currencyTo: 'GBP',
     valueInput: '',
-    valueOutput: 0,
+    valueOutput: 1,
   })
 
   useEffect(() => {props.getCurrencies()}, []);
   useEffect(() => {setState({...state, valueOutput: state.valueInput*props.rates})}, [props.rates]);
   useEffect(() => {
     if (state.currencyTo && state.currencyFrom) {
-      props.convert(state.currencyFrom.value, state.currencyTo.value);
+      props.convert(state.currencyFrom, state.currencyTo);
     }
   }, [state.currencyFrom, state.currencyTo]);
 
-  const options = props.currencies.map(i => ({value:i, label:i}))
-  
-  const handleChangeFrom = currencyFrom => {
-    setState({...state, currencyFrom: currencyFrom});
-  }
-  const handleChangeTo = currencyTo => {
-    setState({...state, currencyTo: currencyTo});
+  const handleChangePicker = (left, right) => {
+    setState({...state, currencyFrom: left, currencyTo: right});
   }
 
   const handleChangeInput = input => {
@@ -35,31 +31,38 @@ function App(props) {
   }
 
   const reverse = () => {
-    props.convert(state.currencyTo.value, state.currencyFrom.value)
+    props.convert(state.currencyTo, state.currencyFrom)
     setState({...state, currencyTo: state.currencyFrom, currencyFrom:state.currencyTo});
   }
-  
+
   return (
       <div className="App">
-        <Select 
-          value={state.currencyFrom}
-          onChange={handleChangeFrom}
-          name="selectFrom" 
-          id="selectFrom"
-          options={options}
+        <Picker
+          id="currencyPicker"
+          className="currencyPicker"
+          valueLeft={state.currencyFrom}
+          valueRight={state.currencyTo}
+          options={props.currencies}
+          handleChange={handleChangePicker}
         />
-        <Select 
-          value={state.currencyTo}
-          onChange={handleChangeTo}
-          name="selectTo" 
-          id="selectTo"
-          options={options}
-        />
+        <div className="bottom">
+          <div>
+            <input type="number" name="valueFrom" id="valueFrom" min="0" value={state.valueInput} onChange={handleChangeInput} placeholder="Enter a value"/>
+            <input type="number" name="valueTo" id="valueTo" value={state.valueOutput} disabled/>
+          </div>
+          <button onClick={reverse}>Reverse</button>
+          <CookieConsent
+              location="bottom"
+              buttonText="No prob my dude"
+              cookieName="cookie"
+              style={{ background: "rgb(48, 102, 219)" }}
+              buttonStyle={{ backgroundColor: "rgb(241, 241, 241)", fontSize: "13px" }}
+          >
+              You’re so cool bro, thank you for using this magnificent currency app!
+          </CookieConsent>
+        </div>
 
-        <input type="number" name="valueFrom" id="valueFrom" value={state.valueInput} onChange={handleChangeInput} placeholder="Enter value"/>
-        <input type="number" name="valueTo" id="valueTo" value={state.valueOutput} disabled/>
 
-        <button onClick={reverse}>Reverse</button>
       </div>
 
   );

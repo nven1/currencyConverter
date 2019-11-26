@@ -1,0 +1,157 @@
+%buttonLeft {
+  border-radius: 10px 0 0 10px;
+  outline: none;
+  border: none;
+  background-color: rgb(241, 241, 241);
+  color: rgb(48, 102, 219);
+}
+
+%buttonRight {
+  border-radius: 0 10px 10px 0;
+  outline: none;
+  border: none;
+  background-color: rgb(48, 102, 219);
+  color: white;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.App {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  align-content: center;
+  height: 100vh;
+}
+
+.pickerContainer {
+  height: max-content;
+  display: grid;
+  align-self: flex-end;
+  margin: 0 5vh;
+  
+  
+}
+
+.pickerOpen {
+  display: grid;
+  height: 48vh;
+  margin: 2vh 20vh 0 20vh;
+  grid-template-rows: 85% 15%;
+  background-color: rgb(241, 241, 241);
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  button {
+    justify-self: center;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    padding: 0 2vh;
+    margin: 0vh 0 3vh 0;
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(48, 102, 219);
+      color: white;
+    }
+  }
+}
+
+.pickerUl {
+  overflow: auto;
+  margin: 2vh 4vh;
+  
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  ul {
+    list-style-type: none;
+    margin: 2vh;
+    padding: 0;
+    li {
+      padding: 1vh 4vh;
+      cursor: pointer;
+    }
+  }
+}
+
+.active {
+  background-color: rgb(48, 102, 219);
+  color: white;
+  border-radius: 15px;
+}
+
+.pickerClosed {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  span {
+    margin: 0 0 2vh 0;
+    opacity: .35;
+  }
+  button {
+    padding: 2.5vh 0vh;
+    margin: 1vh 0;
+    cursor: pointer;
+    width: 15vh;
+  }
+  button:nth-child(odd) {
+    @extend %buttonLeft;
+  }
+  button:nth-child(even) {
+    @extend %buttonRight;
+  }
+  button:hover {
+    opacity: .6;
+  }
+}
+
+.bottom {
+  div {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    margin: -2vh 0 0 0;
+    input {
+      padding: 2vh 0;
+      text-align: center;
+      box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.4);
+      &:focus::placeholder{
+        color:transparent;
+   }
+    }
+    #valueFrom {
+      @extend %buttonLeft;
+    }
+    #valueTo {
+      @extend %buttonRight;
+    }
+  }
+  button {
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background-color: rgb(48, 102, 219);
+    color: white;
+    padding: 2vh 4vh;
+    margin: 2vh 0 0 0;
+    cursor: pointer;
+    &:hover {
+      opacity: .9;
+    }
+    &:active {
+      background-color: rgb(37, 86, 192);
+    }
+  }
+
+}
